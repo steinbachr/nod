@@ -5,7 +5,9 @@ html
     title Test checker
     link(rel='stylesheet', href='../node_modules/grunt-contrib-qunit/test/libs/qunit.css')
   body
-    h1 Hello 2
+    h1 Hello
+    script
+      var foo = 'bar'
     script(src='../lib/jquery.min.js')
     script(src='../node_modules/grunt-contrib-qunit/test/libs/qunit.js')
     script(src='../checker.js')

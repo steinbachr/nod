@@ -1,8 +1,6 @@
 
-console.log(Checker);
-
-test('foo', function() {
-  return ok(foo === 'bar', 'werod');
+test('testing foo', function() {
+  return ok(foo === 'bar', 'foo is bar!');
 });
 
 test('checker basic', function() {
