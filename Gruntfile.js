@@ -128,6 +128,11 @@ module.exports = function (grunt) {
                 files: {
                     "./index.html": ["dev/index.jade"],
                     ".tmp/test.html": ['dev/test.jade']
+                },
+            },
+            qunit: {
+                files: {
+                    './qunit/test_checker.html': ['qunit/jade/test_checker.jade']
                 }
             }
 
@@ -165,6 +170,15 @@ module.exports = function (grunt) {
                     cwd: '.tmp/spec',
                     src: '*.coffee',
                     dest: 'test/spec'
+                }]
+            },
+            qunit: {
+                options: {
+                    bare: true
+                },
+                files: [{
+                    src: './qunit/coffee/test_checker.coffee',
+                    dest: './qunit/test_checker.js'
                 }]
             }
         },
@@ -226,7 +240,7 @@ module.exports = function (grunt) {
           runtest : ['nod/*.coffee']
         },
         qunit: {
-          all: ['node_modules/grunt-contrib-qunit/test/**/*.html']
+          all: ['qunit/**/*.html']
         }
     });
 
@@ -256,6 +270,12 @@ module.exports = function (grunt) {
         'jade',
         'connect:test'
         // 'mocha'  // times out
+    ]);
+
+    grunt.registerTask('q', [
+      'jade:qunit',
+      'coffee:qunit',
+      'qunit'
     ]);
 
     grunt.registerTask('build', [
