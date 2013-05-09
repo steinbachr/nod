@@ -11,6 +11,7 @@ module.exports = function (grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.loadNpmTasks('grunt-coffeelint');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 
     var nodConfig = {
         name: 'jquery-nod',
@@ -223,6 +224,9 @@ module.exports = function (grunt) {
         },
         coffeelint: {
           runtest : ['nod/*.coffee']
+        },
+        qunit: {
+          all: ['node_modules/grunt-contrib-qunit/test/**/*.html']
         }
     });
 
