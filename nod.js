@@ -119,7 +119,8 @@ Listener = (function() {
 
     this.runCheck = __bind(this.runCheck, this);
 
-    this.delayedCheck = __bind(this.delayedCheck, this);
+    this.delayedCheck = __bind(this.delayedCheck, this);    
+    this.checkOnSubmit = this.get.checkOnSubmit; //bobby added, only check when submit button is clicked
 
     this.events = __bind(this.events, this);
 
@@ -135,8 +136,12 @@ Listener = (function() {
     if (this.$el.attr('type') === 'radio') {
       return $('[name="' + this.$el.attr("name") + '"]').on('change', this.runCheck);
     } else {
-      this.$el.on('change', this.runCheck);
-      this.$el.on('blur', this.runCheck);
+      if (this.checkOnSubmit) {
+        $(this.get.submitBtnSelector).on('click', this.runCheck);
+      } else {
+        this.$el.on('change', this.runCheck);
+        this.$el.on('blur', this.runCheck);
+      }
       if (this.field[1] === 'one-of') {
         $(window).on('nod-run-one-of', this.runCheck);
       }
@@ -302,8 +307,10 @@ Nod = (function() {
       'silentSubmit': false,
       'broadcastError': false,
       'errorClass': 'nod_msg',
-      'groupSelector': '.control-group'
+      'groupSelector': '.control-group',
+      'checkOnSubmit': false //bobby added, only perforrm check when submit is clicked
     }, options);
+    this.get.disableSubmitBtn = this.get.checkOnSubmit ? false : this.get.disableSubmitBtn//bobby added, if checkOnSubmit = true, disableSubmitBtn should be false
     this.listeners = this.createListeners(fields);
     this.submit = this.form.find(this.get.submitBtnSelector);
     this.checkIfElementsExist(this.form, this.submit, this.get.disableSubmitBtn);
@@ -311,8 +318,10 @@ Nod = (function() {
   }
 
   Nod.prototype.createListeners = function(fields) {
-    var el, field, listeners, _i, _j, _len, _len1, _ref;
+    var el, field, listeners, _i, _j, _len, _len1, _ref;      
     listeners = [];
+    
+    //bobby added this. If we just want to check on submit, then don't attach the other listeners
     for (_i = 0, _len = fields.length; _i < _len; _i++) {
       field = fields[_i];
       if (field.length !== 3) {
